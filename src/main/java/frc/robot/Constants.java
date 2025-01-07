@@ -51,14 +51,6 @@ public final class Constants {
 
     public static final boolean kSwerveEnabled = true;
     public static final boolean kVisionEnabled = false;
-    public static final boolean kClimbEnabled = true;
-    public static final boolean kIntakeEnabled = true;
-    public static final boolean kShooterEnabled = true;
-    public static final boolean kPivotShooterEnabled = true;
-    public static final boolean kTurretEnabled = true;
-    public static final boolean kAmpevatorEnabled = true;
-    public static final boolean kAmpevatorRollersEnabled = true;
-    public static final boolean kSpindexEnabled = true;
   }
 
   public static class Logging {
