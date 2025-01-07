@@ -27,7 +27,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final MappedXboxController m_driverController =
+  public final MappedXboxController m_driverController =
       new MappedXboxController(ControllerConstants.kDriverControllerPort, "driver");
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
