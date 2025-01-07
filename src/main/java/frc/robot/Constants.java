@@ -16,7 +16,48 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OperatorConstants {
+  public static class ControllerConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
+
+    public static class DriverConstants {
+      public static final double kStickDeadband = 0.1;
+      public static final double kRotationalDeadband = 0.12;
+    }
+  }
+
+  // Naming scheme for FeatureFlags:
+  // k___Enabled = enables/disables a subsystem
+  // kUse___ = enables/disables a specific feature
+  // but all of the kUse constants should
+  // be in their specific SubsystemConstants file
+  public static class FeatureFlags {
+    // AdvantageKit is a logging library we use that
+    // can provide logging replay and it's how we can
+    // do comprehensive logging. Logging to NetworkTables
+    // is disabled on field (FMS connected).
+    public static final boolean kAdvKitEnabled = true;
+    // Monologue is another logging library that we use for
+    // sending values to our dashboard because we don't want
+    // AdvantageKit (which logs EVERYTHING) to dump to NetworkTables
+    // during competition. So we use Monologue to log the things
+    // for our dashboard (it will ALWAYS log to NetworkTables;
+    // AdvantageKit can be configured to log to a file when connected to FMS)
+    public static final boolean kMonologueEnabled = true;
+    // If true, the LoggedTunableNumber will work and do TunableNumber things
+    public static final boolean kTuningModeEnabled = false;
+    // Toggle whether or not the controller map should dump
+    public static final boolean kControllerMapEnabled = true;
+
+    public static final boolean kSwerveEnabled = true;
+    public static final boolean kVisionEnabled = false;
+  }
+
+  public static class Logging {
+    public static final boolean kLogToUSB = true;
+    public static final boolean kAdvkitUseReplayLogs = false;
+    // Defaults from Monologue docs
+    public static final boolean kMonologueFileOnly = false;
+    public static final boolean kMonologueLazyLogging = false;
   }
 }
