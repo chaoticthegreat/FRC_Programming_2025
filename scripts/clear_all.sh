@@ -10,7 +10,7 @@ ssh admin@10.32.56.2 <<'ENDSSH'
 set -x
 cd ../
 cd lvuser
-rm FRC_Programming_2024.jar
+rm *.jar
 rm -rf deploy
 /usr/local/frc/bin/frcKillRobot.sh -r -t 
 set +x
