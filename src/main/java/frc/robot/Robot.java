@@ -7,13 +7,10 @@
 
 package frc.robot;
 
-import choreo.auto.AutoChooser;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.utils.NT4PublisherNoFMS;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -43,8 +40,6 @@ public class Robot extends LoggedRobot {
     m_robotContainer = new RobotContainer();
     configureAdvantageKit();
   }
-
-
 
   private void configureAdvantageKit() {
     if (isReal()) {
@@ -138,8 +133,7 @@ public class Robot extends LoggedRobot {
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
-  public void autonomousInit() {
-  }
+  public void autonomousInit() {}
 
   /** This function is called periodically during autonomous. */
   @Override

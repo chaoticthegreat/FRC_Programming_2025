@@ -9,7 +9,6 @@ package frc.robot;
 
 import choreo.auto.AutoChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -60,11 +59,11 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-//    m_driverController.b("Example method").whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    //    m_driverController.b("Example
+    // method").whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
 
   private void configureChoreoAutoChooser() {
-
 
     // Add options to the chooser
     autoChooser.addRoutine("Example Routine", m_autoRoutines::simplePathAuto);
@@ -75,5 +74,4 @@ public class RobotContainer {
     // Schedule the selected auto during the autonomous period
     RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());
   }
-
 }
