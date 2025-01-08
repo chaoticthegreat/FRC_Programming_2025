@@ -7,13 +7,16 @@
 
 package frc.robot;
 
+import choreo.auto.AutoChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.commands.AutoRoutines;
+import frc.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import frc.robot.subsystems.swerve.generated.TunerConstants;
 import frc.robot.utils.MappedXboxController;
 
 /**
@@ -24,7 +27,6 @@ import frc.robot.utils.MappedXboxController;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public final MappedXboxController m_driverController =
@@ -32,10 +34,17 @@ public class RobotContainer {
   public final MappedXboxController m_operatorController =
       new MappedXboxController(ControllerConstants.kOperatorControllerPort, "operator");
 
+  private final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
+  private final AutoRoutines m_autoRoutines;
+  private final AutoChooser autoChooser = new AutoChooser();
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    m_autoRoutines = new AutoRoutines(drivetrain.createAutoFactory(drivetrain::trajLogger));
+    configureChoreoAutoChooser();
   }
 
   /**
@@ -48,22 +57,23 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b("Example method").whileTrue(m_exampleSubsystem.exampleMethodCommand());
+//    m_driverController.b("Example method").whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+  private void configureChoreoAutoChooser() {
+
+
+    // Add options to the chooser
+    autoChooser.addRoutine("Example Routine", m_autoRoutines::simplePathAuto);
+
+    // Put the auto chooser on the dashboard
+    SmartDashboard.putData(autoChooser);
+
+    // Schedule the selected auto during the autonomous period
+    RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());
   }
+
 }
