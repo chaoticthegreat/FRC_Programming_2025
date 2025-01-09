@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.drivers.QuestNav;
 import frc.robot.subsystems.swerve.generated.TunerConstants.TunerSwerveDrivetrain;
+import frc.robot.utils.RepulsorFieldPlanner;
 import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
@@ -119,7 +120,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   /* The SysId routine to test */
   private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
 
+
   private QuestNav questNav = new QuestNav();
+
+  public RepulsorFieldPlanner m_repulsor = new RepulsorFieldPlanner();
+
 
   /**
    * Constructs a CTRE SwerveDrivetrain using the specified constants.
@@ -194,6 +199,28 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     resetPose(new Pose2d());
   }
 
+  public Pose2d targetPose() {
+    return new Pose2d(
+        m_pathXController.getSetpoint(),
+        m_pathYController.getSetpoint(),
+        Rotation2d.fromRadians(m_pathThetaController.getSetpoint()));
+  }
+
+  public Command repulsorCommand(Supplier<Pose2d> target) {
+    return run(
+        () -> {
+          m_repulsor.setGoal(target.get().getTranslation());
+          followPath(
+              this.getState().Pose,
+              m_repulsor.getCmd(
+                  this.getState().Pose,
+                  this.getState().Speeds,
+                  4,
+                  true,
+                  target.get().getRotation()));
+        });
+  }
+
   /**
    * Creates a new auto factory for this drivetrain.
    *
@@ -214,10 +241,27 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         () -> getState().Pose, this::resetPose, this::followPath, true, this, trajLogger);
   }
 
+
   @Override
   public void resetPose(Pose2d pose) {
     super.resetPose(pose);
     questNav.setResetPosition(pose);
+  }
+
+  public void followPath(Pose2d pose, SwerveSample sample) {
+    m_pathThetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+    var targetSpeeds = sample.getChassisSpeeds();
+    targetSpeeds.vxMetersPerSecond += m_pathXController.calculate(pose.getX(), sample.x);
+    targetSpeeds.vyMetersPerSecond += m_pathYController.calculate(pose.getY(), sample.y);
+    targetSpeeds.omegaRadiansPerSecond +=
+        m_pathThetaController.calculate(pose.getRotation().getRadians(), sample.heading);
+
+    setControl(
+        m_pathApplyFieldSpeeds
+            .withSpeeds(targetSpeeds)
+            .withWheelForceFeedforwardsX(sample.moduleForcesX())
+            .withWheelForceFeedforwardsY(sample.moduleForcesY()));
   }
 
   /**
