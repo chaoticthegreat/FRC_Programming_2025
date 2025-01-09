@@ -120,11 +120,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   /* The SysId routine to test */
   private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
 
-
   private QuestNav questNav = new QuestNav();
 
   public RepulsorFieldPlanner m_repulsor = new RepulsorFieldPlanner();
-
 
   /**
    * Constructs a CTRE SwerveDrivetrain using the specified constants.
@@ -240,7 +238,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     return new AutoFactory(
         () -> getState().Pose, this::resetPose, this::followPath, true, this, trajLogger);
   }
-
 
   @Override
   public void resetPose(Pose2d pose) {
