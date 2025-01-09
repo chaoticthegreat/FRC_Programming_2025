@@ -90,7 +90,6 @@ public class QuestNav {
     }
   }
 
-
   // Should only done when intializing the robot and needs to be as accurate as possible
   public void setResetPosition(Pose2d resetPosition) {
     this.resetPosition = resetPosition;
