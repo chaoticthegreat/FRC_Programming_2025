@@ -12,6 +12,7 @@ import static edu.wpi.first.units.Units.*;
 import choreo.Choreo.TrajectoryLogger;
 import choreo.auto.AutoFactory;
 import choreo.trajectory.SwerveSample;
+import choreo.trajectory.Trajectory;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
@@ -226,6 +227,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
    */
   public AutoFactory createAutoFactory() {
     return createAutoFactory((sample, isStart) -> {});
+  }
+
+  public void trajLogger(Trajectory<SwerveSample> sample, boolean isStart) {
+    Logger.recordOutput(this.getClass().getSimpleName() + "/Choreo/TrajPoses", sample.getPoses());
   }
 
   /**
