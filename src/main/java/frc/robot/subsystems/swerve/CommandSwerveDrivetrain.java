@@ -30,9 +30,11 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.drivers.QuestNav;
 import frc.robot.subsystems.swerve.generated.TunerConstants.TunerSwerveDrivetrain;
 import frc.robot.utils.RepulsorFieldPlanner;
 import java.util.function.Supplier;
+import org.littletonrobotics.junction.Logger;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements Subsystem so it can easily
@@ -118,6 +120,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   /* The SysId routine to test */
   private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
 
+  private QuestNav questNav = new QuestNav();
+
   public RepulsorFieldPlanner m_repulsor = new RepulsorFieldPlanner();
 
   /**
@@ -135,6 +139,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     if (Utils.isSimulation()) {
       startSimThread();
     }
+    resetPose(new Pose2d());
   }
 
   /**
@@ -156,6 +161,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     if (Utils.isSimulation()) {
       startSimThread();
     }
+    resetPose(new Pose2d());
   }
 
   /**
@@ -188,6 +194,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     if (Utils.isSimulation()) {
       startSimThread();
     }
+    resetPose(new Pose2d());
   }
 
   public Pose2d targetPose() {
@@ -230,6 +237,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   public AutoFactory createAutoFactory(TrajectoryLogger<SwerveSample> trajLogger) {
     return new AutoFactory(
         () -> getState().Pose, this::resetPose, this::followPath, true, this, trajLogger);
+  }
+
+  @Override
+  public void resetPose(Pose2d pose) {
+    super.resetPose(pose);
+    questNav.setResetPosition(pose);
   }
 
   public void followPath(Pose2d pose, SwerveSample sample) {
@@ -323,6 +336,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
               });
     }
+    this.addVisionMeasurement(
+        questNav.getPose().transformBy(SwerveConstants.robotToQuest.inverse()),
+        Utils.getCurrentTimeSeconds());
+    Logger.recordOutput("QuestNav/pose", questNav.getPose());
+    Logger.recordOutput("QuestNav/quaternion", questNav.getQuaternion());
+    Logger.recordOutput("QuestNav/batteryPercent", questNav.getBatteryPercent());
   }
 
   private void startSimThread() {

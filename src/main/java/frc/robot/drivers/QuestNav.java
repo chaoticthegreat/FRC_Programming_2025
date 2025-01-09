@@ -90,6 +90,11 @@ public class QuestNav {
     }
   }
 
+  // Should only done when intializing the robot and needs to be as accurate as possible
+  public void setResetPosition(Pose2d resetPosition) {
+    this.resetPosition = resetPosition;
+  }
+
   // Get the yaw Euler angle of the headset
   private float getOculusYaw() {
     float[] eulerAngles = questEulerAngles.get();
