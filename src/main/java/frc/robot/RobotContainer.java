@@ -9,6 +9,7 @@ package frc.robot;
 
 import choreo.auto.AutoChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -44,6 +45,7 @@ public class RobotContainer {
     configureBindings();
     m_autoRoutines = new AutoRoutines(drivetrain.createAutoFactory(drivetrain::trajLogger));
     configureChoreoAutoChooser();
+    CommandScheduler.getInstance().registerSubsystem(drivetrain);
   }
 
   /**
