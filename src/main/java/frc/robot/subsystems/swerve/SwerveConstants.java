@@ -15,9 +15,6 @@ import edu.wpi.first.math.util.Units;
 
 public final class SwerveConstants {
 
-  public static final Transform2d robotToQuest =
-      new Transform2d(
-          new Translation2d(-0.026/2,0.667/2), Rotation2d.fromDegrees(180));
   public static final double wheelRadiusMaxVelocity = 0.25; // Rad/Sec
   public static final double wheelRadiusMaxRampRate = 0.05; // Rad/Sec^2
 }

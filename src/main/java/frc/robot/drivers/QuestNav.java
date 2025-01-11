@@ -117,7 +117,7 @@ public class QuestNav {
 
   private Pose2d getQuestNavPose() {
     var oculousPositionCompensated =
-        getQuestNavTranslation().minus(new Translation2d(0, 0.1651)); // 6.5
+        getQuestNavTranslation().minus(new Translation2d(0, 0.68)); // 6.5
     return new Pose2d(oculousPositionCompensated, Rotation2d.fromDegrees(getOculusYaw()));
   }
 }
