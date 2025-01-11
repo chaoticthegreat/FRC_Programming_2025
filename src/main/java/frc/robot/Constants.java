@@ -61,7 +61,7 @@ public final class Constants {
 
     public static final boolean kSwerveEnabled = true;
     public static final boolean kVisionEnabled = false;
-    public static final boolean kSwerveAccelerationLimitingEnabled = true;
+    public static final boolean kSwerveAccelerationLimitingEnabled = false;
   }
 
   public static class Logging {

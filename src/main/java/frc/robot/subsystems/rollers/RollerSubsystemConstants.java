@@ -18,15 +18,15 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 public final class RollerSubsystemConstants {
 
   // CAN bus IDs
-  public static final int kRollerMotorID = 0;
+  public static final int kRollerMotorID = 26;
 
   // Voltages
-  public static final double kRollerMotorVoltage = 0.0;
+  public static final double kRollerMotorVoltage = 4;
 
   // Motion magic enable/disable default values
   public static boolean kRollerMotorMotionMagic = false;
 
-  public static double updateFrequency = 0.0;
+  public static double updateFrequency = 50;
 
   public static final TalonFXConfiguration rollerMotorConfig =
       new TalonFXConfiguration()
