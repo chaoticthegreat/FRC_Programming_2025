@@ -7,11 +7,16 @@
 
 package frc.robot.subsystems.swerve;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 
 public final class SwerveConstants {
 
-  public static final Transform2d robotToQuest = new Transform2d();
+  public static final Transform2d robotToQuest =
+      new Transform2d(
+          new Translation2d(0, Units.inchesToMeters(13.5)), Rotation2d.fromDegrees(180));
   public static final double wheelRadiusMaxVelocity = 0.25; // Rad/Sec
   public static final double wheelRadiusMaxRampRate = 0.05; // Rad/Sec^2
 }
