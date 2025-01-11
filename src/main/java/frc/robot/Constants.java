@@ -25,6 +25,15 @@ public final class Constants {
     public static class DriverConstants {
       public static final double kStickDeadband = 0.1;
       public static final double kRotationalDeadband = 0.12;
+
+      public static final double kSwerveVelXAccelRateLimit = 0.5;
+      public static final double kSwerveVelXDecelRateLimit = 0.5;
+
+      public static final double kSwerveVelYAccelRateLimit = 0.5;
+      public static final double kSwerveVelYDecelRateLimit = 0.5;
+
+      public static final double kSwerveAngVelAccelRateLimit = 0.5;
+      public static final double kSwerveAngVelDecelRateLimit = 0.5;
     }
   }
 
@@ -52,6 +61,7 @@ public final class Constants {
 
     public static final boolean kSwerveEnabled = true;
     public static final boolean kVisionEnabled = false;
+    public static final boolean kSwerveAccelerationLimitingEnabled = true;
   }
 
   public static class Logging {
