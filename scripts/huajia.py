@@ -35,6 +35,27 @@ class Pose:
         }
 
 
+KEEP_OUT_OF_REEF = {
+    "from": "first",
+    "to": "last",
+    "data": {
+        "type": "KeepOutCircle",
+        "props": {
+            "x": {
+                "exp": "4.451519977301359 m",
+                "val": 4.451519977301359,
+            },
+            "y": {
+                "exp": "4.039342276751995 m",
+                "val": 4.039342276751995,
+            },
+            "r": {"exp": ".88 m", "val": 0.88},
+        },
+    },
+    "enabled": True,
+}
+
+
 def template(waypoints, name="New Path"):
     return {
         "name": name,
@@ -55,6 +76,7 @@ def template(waypoints, name="New Path"):
                     "data": {"type": "StopPoint", "props": {}},
                     "enabled": True,
                 },
+                KEEP_OUT_OF_REEF,
             ],
             "targetDt": {"exp": "0.05 s", "val": 0.05},
         },
