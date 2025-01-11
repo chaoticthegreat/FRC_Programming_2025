@@ -157,7 +157,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     if (Utils.isSimulation()) {
       startSimThread();
     }
-    resetPose(new Pose2d());
+//    resetPose(new Pose2d());
   }
 
   /**
@@ -179,7 +179,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     if (Utils.isSimulation()) {
       startSimThread();
     }
-    resetPose(new Pose2d());
+//    resetPose(new Pose2d());
   }
 
   /**
@@ -212,7 +212,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     if (Utils.isSimulation()) {
       startSimThread();
     }
-    resetPose(new Pose2d());
+//    resetPose(new Pose2d());
   }
 
   public Pose2d targetPose() {
@@ -263,8 +263,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
   @Override
   public void resetPose(Pose2d pose) {
-    super.resetPose(pose);
-    questNav.setResetPosition(pose);
+//    super.resetPose(pose);
+    questNav.zeroPosition();
   }
 
   public void followPath(Pose2d pose, SwerveSample sample) {
@@ -375,9 +375,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
               });
     }
     if (!Utils.isSimulation() && questNav.connected()) {
-      this.addVisionMeasurement(
-          questNav.getPose().transformBy(SwerveConstants.robotToQuest.inverse()),
-          Utils.getCurrentTimeSeconds());
+//      this.addVisionMeasurement(
+//          questNav.getPose().transformBy(SwerveConstants.robotToQuest.inverse()),
+//          Utils.getCurrentTimeSeconds());
       Logger.recordOutput("QuestNav/pose", questNav.getPose());
       Logger.recordOutput(
           "QuestNav/transformedPose",

@@ -11,13 +11,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.utils.DisableSubsystem;
 import org.littletonrobotics.junction.Logger;
 
-public class RollerSubsystem extends DisableSubsystem {
+public class Roller extends DisableSubsystem {
+
 
   private final RollerIO rollerIO;
 
   private final RollerIOInputsAutoLogged rollerIOInputsAutoLogged = new RollerIOInputsAutoLogged();
 
-  public RollerSubsystem(boolean disabled, RollerIO rollerIO) {
+  public Roller(boolean disabled, RollerIO rollerIO) {
     super(disabled);
     this.rollerIO = rollerIO;
   }

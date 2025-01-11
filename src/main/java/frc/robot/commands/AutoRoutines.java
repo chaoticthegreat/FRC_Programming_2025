@@ -10,12 +10,17 @@ package frc.robot.commands;
 import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
+import frc.robot.subsystems.rollers.Roller;
 
 public class AutoRoutines {
   private final AutoFactory m_factory;
 
-  public AutoRoutines(AutoFactory factory) {
+
+  private final Roller roller;
+
+  public AutoRoutines(AutoFactory factory, Roller roller) {
     m_factory = factory;
+    this.roller = roller;
   }
 
   public AutoRoutine simplePathAuto() {
@@ -25,6 +30,8 @@ public class AutoRoutines {
     routine.active().onTrue(simplePath.resetOdometry().andThen(simplePath.cmd()));
     return routine;
   }
+
+
 
   private static class AutoCommands {
     private AutoCommands() {

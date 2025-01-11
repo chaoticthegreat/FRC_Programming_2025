@@ -18,7 +18,7 @@ import frc.robot.utils.PhoenixUtil;
 
 public class RollerIOTalonFX implements RollerIO {
 
-  final TalonFX rollerMotor = new TalonFX(RollerSubsystemConstants.kRollerMotorID);
+  final TalonFX rollerMotor = new TalonFX(RollerConstants.kRollerMotorID);
   // establishing control requests for INTAKE MOTOR, with desired output and pid
   // slot parameters
 
@@ -27,9 +27,9 @@ public class RollerIOTalonFX implements RollerIO {
   private final StatusSignal<AngularVelocity> rollerMotorVelocity = rollerMotor.getVelocity();
 
   public RollerIOTalonFX() {
-    PhoenixUtil.applyMotorConfigs(rollerMotor, RollerSubsystemConstants.rollerMotorConfig, 3);
+    PhoenixUtil.applyMotorConfigs(rollerMotor, RollerConstants.rollerMotorConfig, 3);
     BaseStatusSignal.setUpdateFrequencyForAll(
-        RollerSubsystemConstants.updateFrequency,
+        RollerConstants.updateFrequency,
         rollerMotorVoltage,
         rollerMotorVelocity,
         rollerMotorStatorCurrent);

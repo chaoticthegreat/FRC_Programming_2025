@@ -15,7 +15,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-public final class RollerSubsystemConstants {
+public final class RollerConstants {
 
   // CAN bus IDs
   public static final int kRollerMotorID = 26;
