@@ -338,6 +338,22 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     return m_sysIdRoutineToApply.dynamic(direction);
   }
 
+  public Command sysIdRotationQuasistatic(SysIdRoutine.Direction direction) {
+    return m_sysIdRoutineRotation.quasistatic(direction);
+  }
+
+  public Command sysIdRotationDynamic(SysIdRoutine.Direction direction) {
+    return m_sysIdRoutineRotation.dynamic(direction);
+  }
+
+  public Command sysIdTranslationQuasistatic(SysIdRoutine.Direction direction) {
+    return m_sysIdRoutineTranslation.quasistatic(direction);
+  }
+
+  public Command sysIdTranslationDynamic(SysIdRoutine.Direction direction) {
+    return m_sysIdRoutineTranslation.dynamic(direction);
+  }
+
   @Override
   public void periodic() {
     /*

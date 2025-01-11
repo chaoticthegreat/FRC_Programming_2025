@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.AutoRoutines;
 import frc.robot.subsystems.swerve.CommandSwerveDrivetrain;
@@ -75,6 +76,31 @@ public class RobotContainer {
         () ->
             drivetrain.wheelRadiusCharacterization(
                 SwerveConstants.wheelRadiusMaxVelocity, SwerveConstants.wheelRadiusMaxRampRate));
+    autoChooser.addCmd(
+        "SysID forward translation dynamic",
+        () -> drivetrain.sysIdTranslationDynamic(SysIdRoutine.Direction.kForward));
+    autoChooser.addCmd(
+        "SysID backward translation dynamic",
+        () -> drivetrain.sysIdTranslationDynamic(SysIdRoutine.Direction.kReverse));
+    autoChooser.addCmd(
+        "SysID forward translation quasitastic",
+        () -> drivetrain.sysIdTranslationQuasistatic(SysIdRoutine.Direction.kForward));
+    autoChooser.addCmd(
+        "SysID forward translation quasitastic",
+        () -> drivetrain.sysIdTranslationQuasistatic(SysIdRoutine.Direction.kReverse));
+
+    autoChooser.addCmd(
+        "SysID forward rotation dynamic",
+        () -> drivetrain.sysIdRotationDynamic(SysIdRoutine.Direction.kForward));
+    autoChooser.addCmd(
+        "SysID backward rotation dynamic",
+        () -> drivetrain.sysIdRotationDynamic(SysIdRoutine.Direction.kReverse));
+    autoChooser.addCmd(
+        "SysID forward rotation quasitastic",
+        () -> drivetrain.sysIdTranslationQuasistatic(SysIdRoutine.Direction.kForward));
+    autoChooser.addCmd(
+        "SysID forward rotation quasitastic",
+        () -> drivetrain.sysIdRotationQuasistatic(SysIdRoutine.Direction.kReverse));
 
     // Put the auto chooser on the dashboard
     SmartDashboard.putData(autoChooser);
