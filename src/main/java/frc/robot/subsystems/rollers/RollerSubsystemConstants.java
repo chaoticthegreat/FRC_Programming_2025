@@ -30,7 +30,7 @@ public final class RollerSubsystemConstants {
 
   public static final TalonFXConfiguration rollerMotorConfig =
       new TalonFXConfiguration()
-          .withSlot0(new Slot0Configs().withKS(0.0).withKV(0.0).withKP(0.0).withKI(0.0).withKD(0.0))
+          .withSlot0(new Slot0Configs().withKS(0.0).withKV(0.0).withKP(1).withKI(0.0).withKD(0.0))
           .withMotorOutput(
               new MotorOutputConfigs()
                   .withNeutralMode(
@@ -48,5 +48,5 @@ public final class RollerSubsystemConstants {
           .withCurrentLimits( // prevents frying/destruction of motors
               new CurrentLimitsConfigs()
                   .withStatorCurrentLimitEnable(true)
-                  .withStatorCurrentLimit(0.0));
+                  .withStatorCurrentLimit(60));
 }

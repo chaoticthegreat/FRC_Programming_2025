@@ -15,7 +15,6 @@ public interface RollerSubsytemIO {
   @AutoLog // useful for telementary, debugging
   public static class RollerInputs {
 
-    public double rollerMOtorTemperature = 0.0;
     public double rollerMotorVoltage = 0.0;
     public double rollerMotorVelocity = 0.0;
     public double rollerMotorStatorCurrent = 0.0;
