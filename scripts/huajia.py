@@ -78,6 +78,19 @@ def load_poses(raw):
         )
 
 
+def export(path):
+    name = f"{'-'.join(p.name for p in path)}"
+    Path(f"src/main/deploy/choreo/{name}.traj").write_text(
+        json.dumps(
+            template(
+                [pose.export() for pose in path],
+                name,
+            ),
+        )
+    )
+    print(name)
+
+
 def main() -> None:
     """Run the app."""
     poses = dict(
@@ -87,18 +100,18 @@ def main() -> None:
             ]["poses"]
         )
     )
-    for pose in "ABCDEFGHIJK":
-        path = [poses["Source2"], poses[pose]]
-        name = f"{'-'.join(p.name for p in path)}"
-        Path(f"src/main/deploy/choreo/{name}.traj").write_text(
-            json.dumps(
-                template(
-                    [pose.export() for pose in path],
-                    name,
-                ),
-            )
-        )
-        print(name)
+    positions = "ABCDEFGHIJK"
+    for i, pose in enumerate("ABCDEFGHIJK"):
+
+        path = [poses["Source2"]]
+        j = i + 1
+        j %= len(positions)
+        while len(path) < len(positions):
+            path.append(poses[positions[j]])
+            path.append(poses["Source2"])
+            j += 1
+            j %= len(positions)
+            export(path)
     # for i in range(1 << len(poses)):
     #     Path(f"src/main/choreo/path_{i}.traj").write_text(
     #         json.dumps(

@@ -1,0 +1,33 @@
+{
+ "name":"Source2-G-Source2-H-Source2-I-Source2",
+ "version":1,
+ "snapshot":{
+  "waypoints":[],
+  "constraints":[],
+  "targetDt":0.05
+ },
+ "params":{
+  "waypoints":[
+    {"x":{"exp":"Source2.x", "val":0.7617058753967285}, "y":{"exp":"Source2.y", "val":1.2630654573440552}, "heading":{"exp":"Source2.heading", "val":-2.2142973724827355}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"G.x", "val":5.808172225952148}, "y":{"exp":"G.y", "val":3.859748125076294}, "heading":{"exp":"G.heading", "val":3.141592653589793}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"Source2.x", "val":0.7617058753967285}, "y":{"exp":"Source2.y", "val":1.2630654573440552}, "heading":{"exp":"Source2.heading", "val":-2.2142973724827355}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"H.x", "val":5.821057319641113}, "y":{"exp":"H.y", "val":4.181881904602051}, "heading":{"exp":"H.heading", "val":3.141592653589793}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"Source2.x", "val":0.7617058753967285}, "y":{"exp":"Source2.y", "val":1.2630654573440552}, "heading":{"exp":"Source2.heading", "val":-2.2142973724827355}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"I.x", "val":5.292757987976074}, "y":{"exp":"I.y", "val":5.083856582641602}, "heading":{"exp":"I.heading", "val":-2.09407456678226}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"Source2.x", "val":0.7617058753967285}, "y":{"exp":"Source2.y", "val":1.2630654573440552}, "heading":{"exp":"Source2.heading", "val":-2.2142973724827355}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false}],
+  "constraints":[
+    {"from":"first", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
+    {"from":"last", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true}],
+  "targetDt":{
+   "exp":"0.05 s",
+   "val":0.05
+  }
+ },
+ "trajectory":{
+  "sampleType":null,
+  "waypoints":[],
+  "samples":[],
+  "splits":[]
+ },
+ "events":[]
+}
