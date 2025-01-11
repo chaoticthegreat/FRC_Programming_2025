@@ -9,32 +9,32 @@ package frc.robot.subsystems.rollers;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.utils.DisableSubsystem;
+import org.littletonrobotics.junction.Logger;
 
 public class RollerSubsystem extends DisableSubsystem {
 
-  private final RollerSubsytemIO rollerIO;
+  private final RollerIO rollerIO;
 
-  public RollerSubsystem(boolean disabled, RollerSubsytemIO rollerIO) {
+  private final RollerIOInputsAutoLogged rollerIOInputsAutoLogged = new RollerIOInputsAutoLogged();
+
+  public RollerSubsystem(boolean disabled, RollerIO rollerIO) {
     super(disabled);
     this.rollerIO = rollerIO;
   }
 
-  public Command rollerIn() {
-    return this.run(
-        () -> {
-          rollerIO.setIntakeVelocity(0);
-        });
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    super.periodic();
+    rollerIO.updateInputs(rollerIOInputsAutoLogged);
+    Logger.processInputs(this.getClass().getSimpleName(), rollerIOInputsAutoLogged);
   }
 
-  public Command setVoltage(double voltage, double passthroughVoltage) {
-    return this.run(
-            () -> {
-              rollerIO.supplyIntakeVoltage(voltage);
-            })
-        .finallyDo(rollerIO::turnOff);
+  public Command off() {
+    return this.runOnce(rollerIO::off);
   }
 
   public Command setRollerVoltage(double voltage) {
-    return this.run(() -> rollerIO.supplyIntakeVoltage(voltage)).finallyDo(rollerIO::turnOff);
+    return this.run(() -> rollerIO.setVoltage(voltage)).finallyDo(rollerIO::off);
   }
 }

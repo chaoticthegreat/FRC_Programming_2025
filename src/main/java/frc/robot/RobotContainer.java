@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.AutoRoutines;
+import frc.robot.subsystems.rollers.RollerIOTalonFX;
+import frc.robot.subsystems.rollers.RollerSubsystem;
 import frc.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import frc.robot.subsystems.swerve.SwerveConstants;
 import frc.robot.subsystems.swerve.generated.TunerConstants;
@@ -39,6 +41,8 @@ public class RobotContainer {
       new MappedXboxController(ControllerConstants.kOperatorControllerPort, "operator");
 
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
+  private final RollerSubsystem rollerSubsystem = new RollerSubsystem(false, new RollerIOTalonFX());
 
   /* Swerve Rate Limiting */
   private final AdaptiveSlewRateLimiter swerveVelXRateLimiter =
