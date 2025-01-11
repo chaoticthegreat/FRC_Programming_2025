@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static frc.robot.subsystems.swerve.SwerveConstants.*;
+
 import choreo.auto.AutoChooser;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -20,15 +23,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.AutoRoutines;
-import frc.robot.subsystems.rollers.RollerIOTalonFX;
 import frc.robot.subsystems.rollers.Roller;
+import frc.robot.subsystems.rollers.RollerIOTalonFX;
 import frc.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import frc.robot.subsystems.swerve.SwerveConstants;
 import frc.robot.subsystems.swerve.generated.TunerConstants;
 import frc.robot.utils.MappedXboxController;
 import frc.robot.utils.ratelimiter.AdaptiveSlewRateLimiter;
-
-import static edu.wpi.first.units.Units.MetersPerSecond;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -45,7 +46,8 @@ public class RobotContainer {
   public final MappedXboxController m_operatorController =
       new MappedXboxController(ControllerConstants.kOperatorControllerPort, "operator");
 
-  private final Telemetry logger = new Telemetry(TunerConstants.kSpeedAt12Volts.in(MetersPerSecond));
+  private final Telemetry logger =
+      new Telemetry(TunerConstants.kSpeedAt12Volts.in(MetersPerSecond));
 
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -94,10 +96,12 @@ public class RobotContainer {
     // cancelling on release.
     // m_driverController.b("Example
     // method").whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    m_driverController.a("ds").onTrue(roller.setRollerVoltage(6));
-    m_driverController.b("dsa").onTrue(roller.setRollerVoltage(-6));
-    m_driverController.y("off").onTrue(roller.off());
-    m_driverController.rightBumper("s").onTrue(Commands.runOnce(()->drivetrain.resetPose(new Pose2d())));
+    m_operatorController.a("ds").onTrue(roller.setRollerVoltage(6));
+    m_operatorController.b("dsa").onTrue(roller.setRollerVoltage(-6));
+    m_operatorController.y("off").onTrue(roller.off());
+    m_operatorController
+        .rightBumper("s")
+        .onTrue(Commands.runOnce(() -> drivetrain.resetPose(new Pose2d())));
   }
 
   private void configureChoreoAutoChooser() {
@@ -134,12 +138,8 @@ public class RobotContainer {
     autoChooser.addCmd(
         "SysID forward rotation quasitastic",
         () -> drivetrain.sysIdRotationQuasistatic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addCmd(
-            "Start Signal Logger",
-            () -> Commands.runOnce(SignalLogger::start));
-    autoChooser.addCmd(
-            "End Signal Logger",
-            () -> Commands.runOnce(SignalLogger::stop));
+    autoChooser.addCmd("Start Signal Logger", () -> Commands.runOnce(SignalLogger::start));
+    autoChooser.addCmd("End Signal Logger", () -> Commands.runOnce(SignalLogger::stop));
 
     // Put the auto chooser on the dashboard
     SmartDashboard.putData(autoChooser);
@@ -159,6 +159,9 @@ public class RobotContainer {
         new SwerveRequest.FieldCentric()
             .withDeadband(0.15 * MaxSpeed)
             .withRotationalRate(0.15 * MaxAngularRate);
+
+    SwerveRequest.FieldCentricFacingAngle azimuth = new SwerveRequest.FieldCentricFacingAngle();
+
     drivetrain.setDefaultCommand(
         // Drivetrain will execute this command periodically
         drivetrain.applyRequest(
@@ -174,7 +177,33 @@ public class RobotContainer {
                         -m_driverController.getRightX()
                             * MaxAngularRate) // Drive counterclockwise with negative X (left)
             ));
+
+    m_driverController
+        .leftBumper()
+        .whileTrue(
+            drivetrain.applyRequest(
+                () ->
+                    drive
+                        .withVelocityX(
+                            -m_driverController.getLeftY()
+                                * SlowMaxSpeed) // Drive forward with negative Y (forward)
+                        .withVelocityY(
+                            -m_driverController.getLeftX()
+                                * SlowMaxSpeed) // Drive left with negative X (left)
+                        .withRotationalRate(
+                            -m_driverController.getRightX()
+                                * SlowMaxAngular) // Drive counterclockwise with negative X (left)
+                ));
+
     m_driverController.y("reset heading").onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+
+    m_driverController
+        .x()
+        .onTrue(drivetrain.applyRequest(() -> azimuth.withTargetDirection(sourceLeft1)));
+    m_driverController
+        .b()
+        .onTrue(drivetrain.applyRequest(() -> azimuth.withTargetDirection(sourceRight2)));
+    m_driverController.a().onTrue(drivetrain.applyRequest(() -> azimuth.withTargetDirection(hang)));
     drivetrain.registerTelemetry(logger::telemeterize);
 
     //

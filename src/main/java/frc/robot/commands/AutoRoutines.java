@@ -15,7 +15,6 @@ import frc.robot.subsystems.rollers.Roller;
 public class AutoRoutines {
   private final AutoFactory m_factory;
 
-
   private final Roller roller;
 
   public AutoRoutines(AutoFactory factory, Roller roller) {
@@ -30,8 +29,6 @@ public class AutoRoutines {
     routine.active().onTrue(simplePath.resetOdometry().andThen(simplePath.cmd()));
     return routine;
   }
-
-
 
   private static class AutoCommands {
     private AutoCommands() {
