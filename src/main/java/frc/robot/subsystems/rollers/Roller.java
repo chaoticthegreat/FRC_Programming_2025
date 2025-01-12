@@ -13,7 +13,6 @@ import org.littletonrobotics.junction.Logger;
 
 public class Roller extends DisableSubsystem {
 
-
   private final RollerIO rollerIO;
 
   private final RollerIOInputsAutoLogged rollerIOInputsAutoLogged = new RollerIOInputsAutoLogged();

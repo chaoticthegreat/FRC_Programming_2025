@@ -94,9 +94,9 @@ public class QuestNav {
   // Should only done when intializing the robot and needs to be as accurate as possible
   public void setResetPosition(Pose2d resetPosition) {
     this.resetPosition = resetPosition;
-//    if (questMiso.get() != 99) {
-//      questMosi.set(1);
-//    }
+    //    if (questMiso.get() != 99) {
+    //      questMosi.set(1);
+    //    }
   }
 
   // Get the yaw Euler angle of the headset
