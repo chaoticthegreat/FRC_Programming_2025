@@ -8,6 +8,8 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
+
+import static edu.wpi.first.units.Units.MetersPerSecond;
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
 import choreo.auto.AutoChooser;
@@ -22,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.FeatureFlags;
 import frc.robot.commands.AutoRoutines;
 import frc.robot.subsystems.rollers.Roller;
 import frc.robot.subsystems.rollers.RollerIOTalonFX;
@@ -68,7 +71,7 @@ public class RobotContainer {
           ControllerConstants.DriverConstants.kSwerveAngVelDecelRateLimit);
 
   private final AutoRoutines m_autoRoutines;
-  private final AutoChooser autoChooser = new AutoChooser();
+  private AutoChooser autoChooser = new AutoChooser();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -160,23 +163,44 @@ public class RobotContainer {
             .withDeadband(0.15 * MaxSpeed)
             .withRotationalRate(0.15 * MaxAngularRate);
 
+    SwerveRequest.ApplyRobotSpeeds driveAlt = new SwerveRequest.ApplyRobotSpeeds();
+
     SwerveRequest.FieldCentricFacingAngle azimuth = new SwerveRequest.FieldCentricFacingAngle();
 
-    drivetrain.setDefaultCommand(
-        // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(
-            () ->
-                drive
-                    .withVelocityX(
-                        -m_driverController.getLeftY()
-                            * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(
-                        -m_driverController.getLeftX()
-                            * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(
-                        -m_driverController.getRightX()
-                            * MaxAngularRate) // Drive counterclockwise with negative X (left)
-            ));
+    if (FeatureFlags.kSwerveAccelerationLimitingEnabled) {
+      drivetrain.setDefaultCommand(
+          drivetrain.applyRequest(
+              () ->
+                  drive
+                      .withVelocityX(
+                          swerveVelXRateLimiter.calculate(
+                              m_driverController.getLeftY() * MaxSpeed)) // Drive -y is
+                      // forward
+                      .withVelocityY(
+                          swerveVelYRateLimiter.calculate(
+                              m_driverController.getLeftX() * MaxSpeed)) // Drive -x is
+                      // left
+                      .withRotationalRate(
+                          swerveAngVelRateLimiter.calculate(
+                              -m_driverController.getRightX() * MaxAngularRate))));
+
+    } else {
+      drivetrain.setDefaultCommand(
+          // Drivetrain will execute this command periodically
+          drivetrain.applyRequest(
+              () ->
+                  drive
+                      .withVelocityX(
+                          -m_driverController.getLeftY()
+                              * MaxSpeed) // Drive forward with negative Y (forward)
+                      .withVelocityY(
+                          -m_driverController.getLeftX()
+                              * MaxSpeed) // Drive left with negative X (left)
+                      .withRotationalRate(
+                          -m_driverController.getRightX()
+                              * MaxAngularRate) // Drive counterclockwise with negative X (left)
+              ));
+    }
 
     m_driverController
         .leftBumper()
@@ -205,31 +229,5 @@ public class RobotContainer {
         .onTrue(drivetrain.applyRequest(() -> azimuth.withTargetDirection(sourceRight2)));
     m_driverController.a().onTrue(drivetrain.applyRequest(() -> azimuth.withTargetDirection(hang)));
     drivetrain.registerTelemetry(logger::telemeterize);
-
-    //
-    //    if (FeatureFlags.kSwerveAccelerationLimitingEnabled) {
-    //      drivetrain.applyRequest(
-    //          () ->
-    //              drive
-    //                  .withVelocityX(
-    //                      swerveVelXRateLimiter.calculate(
-    //                          m_driverController.getLeftY() * MaxSpeed)) // Drive -y is
-    //                  // forward
-    //                  .withVelocityY(
-    //                      swerveVelYRateLimiter.calculate(
-    //                          m_driverController.getLeftX() * MaxSpeed)) // Drive -x is
-    //                  // left
-    //                  .withRotationalRate(
-    //                      swerveAngVelRateLimiter.calculate(
-    //                          -m_driverController.getRightX() * MaxAngularRate)));
-    //    } else {
-    //      drivetrain.applyRequest(
-    //          () ->
-    //              drive
-    //                  .withVelocityX(m_driverController.getLeftY() * MaxSpeed) // Drive -y is
-    // forward
-    //                  .withVelocityY(m_driverController.getLeftX() * MaxSpeed) // Drive -x is left
-    //                  .withRotationalRate(-m_driverController.getRightX() * MaxAngularRate));
-    //    }
   }
 }
