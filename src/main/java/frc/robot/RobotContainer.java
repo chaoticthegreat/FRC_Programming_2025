@@ -8,6 +8,7 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
 import choreo.auto.AutoChooser;
 import com.ctre.phoenix6.SignalLogger;
@@ -96,10 +97,10 @@ public class RobotContainer {
     // cancelling on release.
     // m_driverController.b("Example
     // method").whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    m_driverController.a("ds").onTrue(roller.setRollerVoltage(6));
-    m_driverController.b("dsa").onTrue(roller.setRollerVoltage(-6));
-    m_driverController.y("off").onTrue(roller.off());
-    m_driverController
+    m_operatorController.a("ds").onTrue(roller.setRollerVoltage(6));
+    m_operatorController.b("dsa").onTrue(roller.setRollerVoltage(-6));
+    m_operatorController.y("off").onTrue(roller.off());
+    m_operatorController
         .rightBumper("s")
         .onTrue(Commands.runOnce(() -> drivetrain.resetPose(new Pose2d())));
   }
@@ -162,6 +163,8 @@ public class RobotContainer {
 
     SwerveRequest.ApplyRobotSpeeds driveAlt = new SwerveRequest.ApplyRobotSpeeds();
 
+    SwerveRequest.FieldCentricFacingAngle azimuth = new SwerveRequest.FieldCentricFacingAngle();
+
     if (FeatureFlags.kSwerveAccelerationLimitingEnabled) {
       drivetrain.setDefaultCommand(
           drivetrain.applyRequest(
@@ -196,7 +199,33 @@ public class RobotContainer {
                               * MaxAngularRate) // Drive counterclockwise with negative X (left)
               ));
     }
+
+    m_driverController
+        .leftBumper()
+        .whileTrue(
+            drivetrain.applyRequest(
+                () ->
+                    drive
+                        .withVelocityX(
+                            -m_driverController.getLeftY()
+                                * SlowMaxSpeed) // Drive forward with negative Y (forward)
+                        .withVelocityY(
+                            -m_driverController.getLeftX()
+                                * SlowMaxSpeed) // Drive left with negative X (left)
+                        .withRotationalRate(
+                            -m_driverController.getRightX()
+                                * SlowMaxAngular) // Drive counterclockwise with negative X (left)
+                ));
+
     m_driverController.y("reset heading").onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+
+    m_driverController
+        .x()
+        .onTrue(drivetrain.applyRequest(() -> azimuth.withTargetDirection(sourceLeft1)));
+    m_driverController
+        .b()
+        .onTrue(drivetrain.applyRequest(() -> azimuth.withTargetDirection(sourceRight2)));
+    m_driverController.a().onTrue(drivetrain.applyRequest(() -> azimuth.withTargetDirection(hang)));
     drivetrain.registerTelemetry(logger::telemeterize);
   }
 }
