@@ -143,7 +143,7 @@ public class RobotContainer {
     autoChooser.addCmd("End Signal Logger", () -> Commands.runOnce(SignalLogger::stop));
 
     // Put the auto chooser on the dashboard
-    SmartDashboard.putData(autoChooser);
+    SmartDashboard.putData("auto chooser", autoChooser);
 
     // Schedule the selected auto during the autonomous period
     RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());
