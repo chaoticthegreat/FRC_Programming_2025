@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems.arm;
 
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
@@ -34,6 +35,10 @@ public interface ArmIO {
 
   public default TalonFX getMotor() {
     return new TalonFX(0);
+  }
+
+  public default CANcoder getEncoder() {
+    return new CANcoder(0);
   }
 
   public default void off() {}

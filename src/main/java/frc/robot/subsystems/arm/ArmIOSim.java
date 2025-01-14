@@ -7,8 +7,9 @@
 
 package frc.robot.subsystems.arm;
 
-import static edu.wpi.first.units.Units.Radians;
+import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.sim.CANcoderSimState;
 import com.ctre.phoenix6.sim.ChassisReference;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -34,10 +35,13 @@ public class ArmIOSim extends ArmIOTalonFX {
           ArmConstants.Sim.startingAngle.getRadians());
 
   private TalonFXSimState armSimState;
+  private CANcoderSimState cancoderSimState;
 
   public ArmIOSim() {
     super();
     armSimState = super.getMotor().getSimState();
+    cancoderSimState = super.getEncoder().getSimState();
+    cancoderSimState.Orientation = ChassisReference.Clockwise_Positive;
     armSimState.Orientation = ChassisReference.Clockwise_Positive;
   }
 
@@ -54,6 +58,12 @@ public class ArmIOSim extends ArmIOTalonFX {
         Units.radiansToRotations(armSimModel.getVelocityRadPerSec()) * ArmConstants.Sim.simGearing);
     RoboRioSim.setVInVoltage(
         BatterySim.calculateDefaultBatteryLoadedVoltage(armSimModel.getCurrentDrawAmps()));
+
+    cancoderSimState = super.getEncoder().getSimState();
+    cancoderSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
+    cancoderSimState.setRawPosition(Radians.of(armSimModel.getAngleRads()).in(Rotations));
+    armSimState.setRotorVelocity(
+        RadiansPerSecond.of(armSimModel.getVelocityRadPerSec()).in(RotationsPerSecond));
     super.updateInputs(inputs);
     SimMechs.updateArm(Radians.of(armSimModel.getAngleRads()));
   }

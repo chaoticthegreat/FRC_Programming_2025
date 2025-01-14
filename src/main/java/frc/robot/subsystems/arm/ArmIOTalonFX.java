@@ -109,4 +109,9 @@ public class ArmIOTalonFX implements ArmIO {
   public TalonFX getMotor() {
     return armMotor;
   }
+
+  @Override
+  public CANcoder getEncoder() {
+    return cancoder;
+  }
 }
