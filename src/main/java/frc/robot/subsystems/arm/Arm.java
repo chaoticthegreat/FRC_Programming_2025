@@ -23,15 +23,7 @@ public class Arm extends DisableSubsystem {
     private final ArmIO armIO;
     private final ArmIOInputsAutoLogged armIOAutoLogged =
             new ArmIOInputsAutoLogged();
-
-    private final InterpolatingDoubleTreeMap aprilTagMap =
-            new InterpolatingDoubleTreeMap() {
-                {
-                    put(0.0, 0.0);
-                    put(1.0, 1.0);
-                }
-            };
-
+    
     public Arm(boolean disabled, ArmIO armIO) {
         super(disabled);
 
