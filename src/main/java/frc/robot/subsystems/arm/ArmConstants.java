@@ -7,15 +7,17 @@
 
 package frc.robot.subsystems.arm;
 
+import static edu.wpi.first.units.Units.Rotations;
+
 import com.ctre.phoenix6.configs.*;
-import com.ctre.phoenix6.signals.GravityTypeValue;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.*;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 
 public final class ArmConstants {
   public static final int armMotorId = 51;
+
+  public static final int armMotorEncoderId = 52;
 
   // max value is 8, min is 0
 
@@ -48,7 +50,21 @@ public final class ArmConstants {
           .withCurrentLimits(
               new CurrentLimitsConfigs()
                   .withStatorCurrentLimitEnable(true)
-                  .withStatorCurrentLimit(60));
+                  .withStatorCurrentLimit(60))
+          .withFeedback(
+              new FeedbackConfigs()
+                  .withFeedbackRemoteSensorID(2)
+                  .withFeedbackSensorSource(FeedbackSensorSourceValue.FusedCANcoder)
+                  .withSensorToMechanismRatio(1)
+                  .withRotorToSensorRatio(2));
+
+  public static final CANcoderConfiguration cancoderConfiguration =
+      new CANcoderConfiguration()
+          .withMagnetSensor(
+              new MagnetSensorConfigs()
+                  .withMagnetOffset(Rotations.of(1))
+                  .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
+                  .withAbsoluteSensorDiscontinuityPoint(Rotations.of(0.5)));
 
   public static final class Sim {
     public static final double simGearing = 62.67;

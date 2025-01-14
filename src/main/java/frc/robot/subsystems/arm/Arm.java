@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems.arm;
 
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.utils.DisableSubsystem;
 import org.littletonrobotics.junction.Logger;
@@ -29,12 +31,12 @@ public class Arm extends DisableSubsystem {
     Logger.processInputs(this.getClass().getSimpleName(), armIOAutoLogged);
   }
 
-  public Command setPosition(double position) {
+  public Command setPosition(Angle position) {
     return this.run(() -> armIO.setPosition(position));
   }
 
-  public Command setVoltage(double voltage) {
-    return this.run(() -> armIO.setVoltage(voltage)).finallyDo(armIO::off);
+  public Command setVoltage(Voltage voltage) {
+    return this.run(() -> armIO.setVoltage(voltage));
   }
 
   public Command off() {
