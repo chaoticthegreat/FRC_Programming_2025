@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.epilogue.Logged;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -23,6 +25,15 @@ public final class Constants {
     public static class DriverConstants {
       public static final double kStickDeadband = 0.1;
       public static final double kRotationalDeadband = 0.12;
+
+      public static final double kSwerveVelXAccelRateLimit = 0.5;
+      public static final double kSwerveVelXDecelRateLimit = 0.5;
+
+      public static final double kSwerveVelYAccelRateLimit = 0.5;
+      public static final double kSwerveVelYDecelRateLimit = 0.5;
+
+      public static final double kSwerveAngVelAccelRateLimit = 0.5;
+      public static final double kSwerveAngVelDecelRateLimit = 0.5;
     }
   }
 
@@ -37,13 +48,12 @@ public final class Constants {
     // do comprehensive logging. Logging to NetworkTables
     // is disabled on field (FMS connected).
     public static final boolean kAdvKitEnabled = true;
-    // Monologue is another logging library that we use for
-    // sending values to our dashboard because we don't want
-    // AdvantageKit (which logs EVERYTHING) to dump to NetworkTables
-    // during competition. So we use Monologue to log the things
+    // We don't want AdvantageKit (which logs EVERYTHING)
+    // to dump to NetworkTables during competition.
+    // So we use Monologue to log the things we deem necessary
     // for our dashboard (it will ALWAYS log to NetworkTables;
-    // AdvantageKit can be configured to log to a file when connected to FMS)
-    public static final boolean kMonologueEnabled = true;
+    // AdvantageKit will be configured to log to a file when connected to FMS)
+    public static final boolean kEpilogueEnabled = true;
     // If true, the LoggedTunableNumber will work and do TunableNumber things
     public static final boolean kTuningModeEnabled = false;
     // Toggle whether or not the controller map should dump
@@ -51,13 +61,14 @@ public final class Constants {
 
     public static final boolean kSwerveEnabled = true;
     public static final boolean kVisionEnabled = false;
+    public static final boolean kSwerveAccelerationLimitingEnabled = false;
   }
 
   public static class Logging {
     public static final boolean kLogToUSB = true;
     public static final boolean kAdvkitUseReplayLogs = false;
-    // Defaults from Monologue docs
-    public static final boolean kMonologueFileOnly = false;
-    public static final boolean kMonologueLazyLogging = false;
+    // DEBUG: Everything (which will be useful for debugging)
+    // INFO: Everything except DEBUG
+    public static final Logged.Importance kEpilogueImportance = Logged.Importance.DEBUG;
   }
 }

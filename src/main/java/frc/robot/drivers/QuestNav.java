@@ -81,6 +81,7 @@ public class QuestNav {
     if (questMiso.get() != 99) {
       questMosi.set(1);
     }
+    questMosi.set(0);
   }
 
   // Clean up questnav subroutine messages after processing on the headset
@@ -88,6 +89,14 @@ public class QuestNav {
     if (questMiso.get() == 99) {
       questMosi.set(0);
     }
+  }
+
+  // Should only done when intializing the robot and needs to be as accurate as possible
+  public void setResetPosition(Pose2d resetPosition) {
+    this.resetPosition = resetPosition;
+    //    if (questMiso.get() != 99) {
+    //      questMosi.set(1);
+    //    }
   }
 
   // Get the yaw Euler angle of the headset
@@ -108,7 +117,7 @@ public class QuestNav {
 
   private Pose2d getQuestNavPose() {
     var oculousPositionCompensated =
-        getQuestNavTranslation().minus(new Translation2d(0, 0.1651)); // 6.5
+        getQuestNavTranslation().minus(new Translation2d(0, 0.68)); // 6.5
     return new Pose2d(oculousPositionCompensated, Rotation2d.fromDegrees(getOculusYaw()));
   }
 }
