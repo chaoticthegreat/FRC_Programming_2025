@@ -1,12 +1,13 @@
 // Copyright (c) 2025 FRC 3256
 // https://github.com/Team3256
 //
-// Use of this source code is governed by a 
+// Use of this source code is governed by a
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
 package frc.robot.subsystems.elevator;
 
+import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
@@ -14,6 +15,7 @@ import com.ctre.phoenix6.SignalLogger;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Robot;
 import org.littletonrobotics.junction.Logger;
 
 public class Elevator extends SubsystemBase {
@@ -67,7 +69,16 @@ public class Elevator extends SubsystemBase {
 
   // Level must be between 0 to 3
   public Command toReefLevel(int level) {
-    return this.setPosition(ElevatorConstants.kReefPositions[level]);
+    if (Robot.isReal()) {
+      return this.setPosition(ElevatorConstants.kReefPositions[level].in(Rotations));
+    } else {
+      return this.setPosition(
+          ElevatorConstants.SimulationConstants.kReefPositions[level]
+                  .div(ElevatorConstants.SimulationConstants.kWheelRadius)
+                  .magnitude()
+              / (2 * Math.PI)
+              * ElevatorConstants.SimulationConstants.kGearRatio);
+    }
   }
 
   // TODO: Grab coral level from NT/selector
