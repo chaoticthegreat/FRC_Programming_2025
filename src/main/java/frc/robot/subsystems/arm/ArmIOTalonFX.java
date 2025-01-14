@@ -1,4 +1,4 @@
-// Copyright (c) 2024 FRC 3256
+// Copyright (c) 2025 FRC 3256
 // https://github.com/Team3256
 //
 // Use of this source code is governed by a 
@@ -22,83 +22,74 @@ import frc.robot.utils.PhoenixUtil;
 
 public class ArmIOTalonFX implements ArmIO {
 
-    private final TalonFX armMotor = new TalonFX(ArmConstants.kPivotMotorID);
-    private final PositionVoltage positionRequest =
-            new PositionVoltage(0).withSlot(0).withEnableFOC(ArmConstants.kUseFOC);
-    private final MotionMagicVoltage motionMagicRequest =
-            new MotionMagicVoltage(0).withSlot(0).withEnableFOC(ArmConstants.kUseFOC);
-    private final VoltageOut voltageReq = new VoltageOut(0);
+  private final TalonFX armMotor = new TalonFX(ArmConstants.armMotorId);
+  private final PositionVoltage positionRequest =
+      new PositionVoltage(0).withSlot(0).withEnableFOC(ArmConstants.kUseFOC);
+  private final MotionMagicVoltage motionMagicRequest =
+      new MotionMagicVoltage(0).withSlot(0).withEnableFOC(ArmConstants.kUseFOC);
+  private final VoltageOut voltageReq = new VoltageOut(0);
 
-    private final StatusSignal<Voltage> armMotorVoltage = armMotor.getMotorVoltage();
-    private final StatusSignal<AngularVelocity> armMotorVelocity = armMotor.getVelocity();
-    private final StatusSignal<Angle> armMotorPosition = armMotor.getPosition();
-    private final StatusSignal<Current> armMotorStatorCurrent =
-            armMotor.getStatorCurrent();
-    private final StatusSignal<Current> armMotorSupplyCurrent =
-            armMotor.getSupplyCurrent();
+  private final StatusSignal<Voltage> armMotorVoltage = armMotor.getMotorVoltage();
+  private final StatusSignal<AngularVelocity> armMotorVelocity = armMotor.getVelocity();
+  private final StatusSignal<Angle> armMotorPosition = armMotor.getPosition();
+  private final StatusSignal<Current> armMotorStatorCurrent = armMotor.getStatorCurrent();
+  private final StatusSignal<Current> armMotorSupplyCurrent = armMotor.getSupplyCurrent();
 
-    public ArmIOTalonFX() {
-        PhoenixUtil.applyMotorConfigs(
-                armMotor,
-                ArmConstants.motorConfigs,
-                ArmConstants.flashConfigRetries);
+  public ArmIOTalonFX() {
+    PhoenixUtil.applyMotorConfigs(
+        armMotor, ArmConstants.motorConfigs, ArmConstants.flashConfigRetries);
 
-        BaseStatusSignal.setUpdateFrequencyForAll(
-                ArmConstants.updateFrequency,
-                armMotorVoltage,
-                armMotorVelocity,
-                armMotorPosition,
-                armMotorStatorCurrent,
-                armMotorSupplyCurrent);
-        armMotor.optimizeBusUtilization();
+    BaseStatusSignal.setUpdateFrequencyForAll(
+        ArmConstants.updateFrequency,
+        armMotorVoltage,
+        armMotorVelocity,
+        armMotorPosition,
+        armMotorStatorCurrent,
+        armMotorSupplyCurrent);
+    armMotor.optimizeBusUtilization();
+  }
+
+  @Override
+  public void updateInputs(ArmIOInputs inputs) {
+    BaseStatusSignal.refreshAll(
+        armMotorVoltage,
+        armMotorVelocity,
+        armMotorPosition,
+        armMotorStatorCurrent,
+        armMotorSupplyCurrent);
+    inputs.armMotorVoltage = armMotorVoltage.getValueAsDouble();
+    inputs.armMotorVelocity = armMotorVelocity.getValueAsDouble();
+    inputs.armMotorPosition = armMotorPosition.getValueAsDouble();
+    inputs.armMotorStatorCurrent = armMotorStatorCurrent.getValueAsDouble();
+    inputs.armMotorSupplyCurrent = armMotorSupplyCurrent.getValueAsDouble();
+  }
+
+  @Override
+  public void setPosition(double position) {
+    if (ArmConstants.kUseMotionMagic) {
+      armMotor.setControl(motionMagicRequest.withPosition(position));
+    } else {
+      armMotor.setControl(positionRequest.withPosition(position));
     }
+  }
 
-    @Override
-    public void updateInputs(ArmIOInputs inputs) {
-        BaseStatusSignal.refreshAll(
-                armMotorVoltage,
-                armMotorVelocity,
-                armMotorPosition,
-                armMotorStatorCurrent,
-                armMotorSupplyCurrent);
-        inputs.armMotorVoltage = armMotorVoltage.getValueAsDouble();
-        inputs.armMotorVelocity = armMotorVelocity.getValueAsDouble();
-        inputs.armMotorPosition = armMotorPosition.getValueAsDouble();
-        inputs.armMotorStatorCurrent = armMotorStatorCurrent.getValueAsDouble();
-        inputs.armMotorSupplyCurrent = armMotorSupplyCurrent.getValueAsDouble();
-    }
+  @Override
+  public void setVoltage(double voltage) {
+    armMotor.setVoltage(voltage);
+  }
 
-    @Override
-    public void setPosition(double position) {
-        if (ArmConstants.kUseMotionMagic) {
-            armMotor.setControl(motionMagicRequest.withPosition(position));
-        } else {
-            armMotor.setControl(positionRequest.withPosition(position));
-        }
-    }
+  @Override
+  public void off() {
+    armMotor.setControl(new NeutralOut());
+  }
 
-    @Override
-    public void setVoltage(double voltage) {
-        armMotor.setVoltage(voltage);
-    }
+  @Override
+  public void zero() {
+    armMotor.setPosition(0);
+  }
 
-    @Override
-    public void off() {
-        armMotor.setControl(new NeutralOut());
-    }
-
-    @Override
-    public void zero() {
-        armMotor.setPosition(0);
-    }
-
-    @Override
-    public TalonFX getMotor() {
-        return armMotor;
-    }
-
-    @Override
-    public VoltageOut getVoltageRequest() {
-        return voltageReq;
-    }
+  @Override
+  public TalonFX getMotor() {
+    return armMotor;
+  }
 }

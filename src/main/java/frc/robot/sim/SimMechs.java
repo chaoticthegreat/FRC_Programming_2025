@@ -25,7 +25,7 @@ public final class SimMechs {
   private static final MechanismLigament2d armViz =
       armRoot.append(new MechanismLigament2d("Arm", 1, 0.0, 5.0, new Color8Bit(Color.kGreen)));
 
-  public static void updatePivotShooter(Angle angle) {
+  public static void updateArm(Angle angle) {
     armViz.setAngle(angle.in(Degrees));
   }
 

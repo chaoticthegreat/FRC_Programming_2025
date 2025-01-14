@@ -1,4 +1,4 @@
-// Copyright (c) 2024 FRC 3256
+// Copyright (c) 2025 FRC 3256
 // https://github.com/Team3256
 //
 // Use of this source code is governed by a 
@@ -7,9 +7,10 @@
 
 package frc.robot.subsystems.arm;
 
+import static edu.wpi.first.units.Units.Radians;
+
 import com.ctre.phoenix6.sim.ChassisReference;
 import com.ctre.phoenix6.sim.TalonFXSimState;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotController;
@@ -21,41 +22,39 @@ import org.littletonrobotics.junction.LoggedRobot;
 
 public class ArmIOSim extends ArmIOTalonFX {
 
-    private final SingleJointedArmSim armSimModel =
-            new SingleJointedArmSim(
-                    DCMotor.getKrakenX60(1),
-                    ArmConstants.sim.simGearing,
-                    ArmConstants.sim.jkGMetersSquared,
-                    ArmConstants.sim.armLength,
-                    ArmConstants.sim.minAngle.getRadians(),
-                    ArmConstants.sim.maxAngle.getRadians(),
-                    true,
-                    ArmConstants.sim.startingAngle.getRadians());
+  private final SingleJointedArmSim armSimModel =
+      new SingleJointedArmSim(
+          DCMotor.getKrakenX60(1),
+          ArmConstants.Sim.simGearing,
+          ArmConstants.Sim.jkGMetersSquared,
+          ArmConstants.Sim.armLength,
+          ArmConstants.Sim.minAngle.getRadians(),
+          ArmConstants.Sim.maxAngle.getRadians(),
+          true,
+          ArmConstants.Sim.startingAngle.getRadians());
 
-    private TalonFXSimState armSimState;
+  private TalonFXSimState armSimState;
 
-    public ArmIOSim() {
-        super();
-        armSimState = super.getMotor().getSimState();
-        armSimState.Orientation = ChassisReference.Clockwise_Positive;
-    }
+  public ArmIOSim() {
+    super();
+    armSimState = super.getMotor().getSimState();
+    armSimState.Orientation = ChassisReference.Clockwise_Positive;
+  }
 
-    @Override
-    public void updateInputs(ArmIOInputs inputs) {
+  @Override
+  public void updateInputs(ArmIOInputs inputs) {
 
-        armSimState = super.getMotor().getSimState();
-        armSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
-        armSimModel.setInputVoltage(armSimState.getMotorVoltage());
-        armSimModel.update(LoggedRobot.defaultPeriodSecs);
-        armSimState.setRawRotorPosition(
-                Units.radiansToRotations(armSimModel.getAngleRads())
-                        * ArmConstants.sim.simGearing);
-        armSimState.setRotorVelocity(
-                Units.radiansToRotations(armSimModel.getVelocityRadPerSec())
-                        * ArmConstants.sim.simGearing);
-        RoboRioSim.setVInVoltage(
-                BatterySim.calculateDefaultBatteryLoadedVoltage(armSimModel.getCurrentDrawAmps()));
-        super.updateInputs(inputs);
-        SimMechs.updateArm(Rotation2d.fromRadians(armSimModel.getAngleRads()));
-    }
+    armSimState = super.getMotor().getSimState();
+    armSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
+    armSimModel.setInputVoltage(armSimState.getMotorVoltage());
+    armSimModel.update(LoggedRobot.defaultPeriodSecs);
+    armSimState.setRawRotorPosition(
+        Units.radiansToRotations(armSimModel.getAngleRads()) * ArmConstants.Sim.simGearing);
+    armSimState.setRotorVelocity(
+        Units.radiansToRotations(armSimModel.getVelocityRadPerSec()) * ArmConstants.Sim.simGearing);
+    RoboRioSim.setVInVoltage(
+        BatterySim.calculateDefaultBatteryLoadedVoltage(armSimModel.getCurrentDrawAmps()));
+    super.updateInputs(inputs);
+    SimMechs.updateArm(Radians.of(armSimModel.getAngleRads()));
+  }
 }
