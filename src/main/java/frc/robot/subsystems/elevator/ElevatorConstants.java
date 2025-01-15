@@ -30,22 +30,23 @@ public interface ElevatorConstants {
   };
 
   public static class SimulationConstants {
-    // TODO: this is wrong
-    private static double pivotToGroundAtStowInches = 7.7;
-    // Elevator extension length
-    public static final Distance[] kReefPositions = {
-      Inches.of(18 - 7.07 - pivotToGroundAtStowInches),
-      Inches.of(47.625 - 3 - pivotToGroundAtStowInches),
-      Inches.of(31.875 - 3 - pivotToGroundAtStowInches),
-      Inches.of(72 - 7.07 - pivotToGroundAtStowInches)
-    };
     public static final Mass kCarriageMass = Kilograms.of(0.0);
     public static final double kGearRatio = 1.0;
     public static final Distance kDrumRadius = Meters.of(0.0);
-    public static final Distance kMinHeight = Meters.of(0.0);
     public static final Distance kMaxHeight = Meters.of(0.0);
     public static final boolean kSimulateGravity = true;
-    public static final Distance kStartingHeight = Meters.of(0.0);
+    // Distance from pivot to ground when elevator is stowed??
+    // TODO: this is wrong
+    // XXX?????? is this even how you're supposed to use it?
+    public static final Distance kStartingHeight = Inches.of(7.7);
+    public static final Distance kMinHeight = kStartingHeight;
     public static final Distance kWheelRadius = Inches.of(1.0);
+    // Elevator extension length
+    public static final Distance[] kReefPositions = {
+      Inches.of(18 - 7.07).minus(kStartingHeight),
+      Inches.of(47.625 - 3).minus(kStartingHeight),
+      Inches.of(31.875 - 3).minus(kStartingHeight),
+      Inches.of(72 - 7.07).minus(kStartingHeight)
+    };
   }
 }
