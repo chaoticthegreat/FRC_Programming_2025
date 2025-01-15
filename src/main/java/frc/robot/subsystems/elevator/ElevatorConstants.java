@@ -7,12 +7,12 @@
 
 package frc.robot.subsystems.elevator;
 
-import static edu.wpi.first.units.Units.Inches;
-import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Mass;
 
 public interface ElevatorConstants {
   public static final int kMotorID = 0;
@@ -39,7 +39,13 @@ public interface ElevatorConstants {
       Inches.of(31.875 - 3 - pivotToGroundAtStowInches),
       Inches.of(72 - 7.07 - pivotToGroundAtStowInches)
     };
+    public static final Mass kCarriageMass = Kilograms.of(0.0);
     public static final double kGearRatio = 1.0;
+    public static final Distance kDrumRadius = Meters.of(0.0);
+    public static final Distance kMinHeight = Meters.of(0.0);
+    public static final Distance kMaxHeight = Meters.of(0.0);
+    public static final boolean kSimulateGravity = true;
+    public static final Distance kStartingHeight = Meters.of(0.0);
     public static final Distance kWheelRadius = Inches.of(1.0);
   }
 }
