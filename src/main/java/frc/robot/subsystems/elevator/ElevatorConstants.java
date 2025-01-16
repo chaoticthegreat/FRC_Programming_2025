@@ -14,8 +14,8 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
 
-public interface ElevatorConstants {
-  public static final int kMotorID = 0;
+public final class ElevatorConstants {
+  public static final int kMotorID = 22;
   public static final TalonFXConfiguration kMotorConfig = new TalonFXConfiguration();
   public static final boolean kUseMotionMagic = true;
   public static final double kStatusSignalUpdateFrequency = 50.0; // Hz
@@ -30,10 +30,10 @@ public interface ElevatorConstants {
   };
 
   public static class SimulationConstants {
-    public static final Mass kCarriageMass = Kilograms.of(0.0);
-    public static final double kGearRatio = 1.0;
-    public static final Distance kDrumRadius = Meters.of(0.0);
-    public static final Distance kMaxHeight = Meters.of(0.0);
+    public static final Mass kCarriageMass = Kilograms.of(10);
+    public static final double kGearRatio = 50;
+    public static final Distance kDrumRadius = Meters.of(1);
+    public static final Distance kMaxHeight = Meters.of(10);
     public static final boolean kSimulateGravity = true;
     // Distance from pivot to ground when elevator is stowed??
     // TODO: this is wrong

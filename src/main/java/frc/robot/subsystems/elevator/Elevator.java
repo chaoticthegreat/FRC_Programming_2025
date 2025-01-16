@@ -13,6 +13,8 @@ import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.SignalLogger;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
 import frc.robot.utils.DisableSubsystem;
@@ -24,8 +26,8 @@ public class Elevator extends DisableSubsystem {
   private final ElevatorIOInputsAutoLogged motorIOAutoLogged = new ElevatorIOInputsAutoLogged();
   private final SysIdRoutine m_sysIdRoutine;
 
-  public Elevator(boolean disabled, ElevatorIO motorIO) {
-    super(disabled);
+  public Elevator(boolean enabled, ElevatorIO motorIO) {
+    super(enabled);
     this.motorIO = motorIO;
     m_sysIdRoutine =
         new SysIdRoutine(
@@ -57,7 +59,7 @@ public class Elevator extends DisableSubsystem {
   }
 
   public Command setVoltage(double voltage) {
-    return this.run(() -> motorIO.setVoltage(voltage)).finallyDo(motorIO::off);
+    return this.run(() -> motorIO.setVoltage(voltage));
   }
 
   public Command off() {

@@ -22,28 +22,23 @@ import org.littletonrobotics.junction.Logger;
 
 public class ElevatorIOSim extends ElevatorIOTalonFX {
   private TalonFXSimState motorSim;
-  private final DCMotor motorModel;
-  private final ElevatorSim elevatorSim;
+//  private final DCMotor motorModel;
+  private final ElevatorSim elevatorSim = new ElevatorSim(
+          ElevatorConstants.kUseFOC ? DCMotor.getKrakenX60Foc(1) : DCMotor.getKrakenX60(1),
+          ElevatorConstants.SimulationConstants.kGearRatio,
+          ElevatorConstants.SimulationConstants.kCarriageMass.in(Kilograms),
+          ElevatorConstants.SimulationConstants.kDrumRadius.in(Meters),
+          ElevatorConstants.SimulationConstants.kMinHeight.in(Meters),
+          ElevatorConstants.SimulationConstants.kMaxHeight.in(Meters),
+          ElevatorConstants.SimulationConstants.kSimulateGravity,
+          ElevatorConstants.SimulationConstants.kStartingHeight.in(Meters));
 
   public ElevatorIOSim() {
     super();
     this.motorSim = super.getMotor().getSimState();
-    this.motorModel =
-        (ElevatorConstants.kUseFOC ? DCMotor.getKrakenX60Foc(1) : DCMotor.getKrakenX60(1))
-            .withReduction(ElevatorConstants.SimulationConstants.kGearRatio);
-    this.elevatorSim =
-        new ElevatorSim(
-            motorModel,
-            ElevatorConstants.SimulationConstants.kGearRatio,
-            ElevatorConstants.SimulationConstants.kCarriageMass.in(Kilograms),
-            ElevatorConstants.SimulationConstants.kDrumRadius.in(Meters),
-            ElevatorConstants.SimulationConstants.kMinHeight.in(Meters),
-            ElevatorConstants.SimulationConstants.kMaxHeight.in(Meters),
-            ElevatorConstants.SimulationConstants.kSimulateGravity,
-            ElevatorConstants.SimulationConstants.kStartingHeight.in(Meters),
-            null);
   }
 
+  @Override
   public void updateInputs(ElevatorIOInputs inputs) {
     motorSim = super.getMotor().getSimState();
     motorSim.setSupplyVoltage(RobotController.getBatteryVoltage());
