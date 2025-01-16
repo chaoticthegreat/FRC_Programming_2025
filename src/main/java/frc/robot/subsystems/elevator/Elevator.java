@@ -16,9 +16,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
+import frc.robot.utils.DisableSubsystem;
 import org.littletonrobotics.junction.Logger;
 
-public class Elevator extends SubsystemBase {
+public class Elevator extends DisableSubsystem {
 
   private final ElevatorIO motorIO;
   private final ElevatorIOInputsAutoLogged motorIOAutoLogged = new ElevatorIOInputsAutoLogged();
