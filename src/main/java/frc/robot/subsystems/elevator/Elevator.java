@@ -25,7 +25,8 @@ public class Elevator extends DisableSubsystem {
   private final ElevatorIOInputsAutoLogged motorIOAutoLogged = new ElevatorIOInputsAutoLogged();
   private final SysIdRoutine m_sysIdRoutine;
 
-  public Elevator(ElevatorIO motorIO) {
+  public Elevator(boolean disabled,ElevatorIO motorIO) {
+    super(disabled);
     this.motorIO = motorIO;
     m_sysIdRoutine =
         new SysIdRoutine(
