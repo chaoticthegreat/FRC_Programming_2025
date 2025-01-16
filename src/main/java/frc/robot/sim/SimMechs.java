@@ -26,7 +26,7 @@ public final class SimMechs {
   private final MechanismRoot2d elevatorRoot = mech.getRoot("Elevator", 3.5, 0.2);
 
   private final MechanismLigament2d elevatorViz =
-      elevatorRoot.append(new MechanismLigament2d("ampevator", 2, 90));
+      elevatorRoot.append(new MechanismLigament2d("Elevator", 2, 90));
 
   private final MechanismLigament2d armViz =
       elevatorViz.append(new MechanismLigament2d("Arm", 1, 0.0, 5.0, new Color8Bit(Color.kGreen)));
