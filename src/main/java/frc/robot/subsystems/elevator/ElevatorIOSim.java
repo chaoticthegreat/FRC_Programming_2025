@@ -22,8 +22,9 @@ import org.littletonrobotics.junction.Logger;
 
 public class ElevatorIOSim extends ElevatorIOTalonFX {
   private TalonFXSimState motorSim;
-//  private final DCMotor motorModel;
-  private final ElevatorSim elevatorSim = new ElevatorSim(
+  //  private final DCMotor motorModel;
+  private final ElevatorSim elevatorSim =
+      new ElevatorSim(
           ElevatorConstants.kUseFOC ? DCMotor.getKrakenX60Foc(1) : DCMotor.getKrakenX60(1),
           ElevatorConstants.SimulationConstants.kGearRatio,
           ElevatorConstants.SimulationConstants.kCarriageMass.in(Kilograms),
