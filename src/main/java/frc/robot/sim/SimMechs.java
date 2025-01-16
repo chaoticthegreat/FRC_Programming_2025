@@ -27,8 +27,7 @@ public final class SimMechs {
 
   private static SimMechs instance = null;
 
-  private SimMechs() {
-  }
+  private SimMechs() {}
 
   public static SimMechs getInstance() {
     if (instance == null) {
