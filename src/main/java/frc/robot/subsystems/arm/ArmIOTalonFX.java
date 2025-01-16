@@ -27,7 +27,7 @@ public class ArmIOTalonFX implements ArmIO {
 
   private final TalonFX armMotor = new TalonFX(ArmConstants.armMotorId);
   private final PositionVoltage positionRequest =
-      new PositionVoltage(0).withSlot(0).withEnableFOC(ArmConstants.kUseFOC);
+      new PositionVoltage(0).withSlot(0).withEnableFOC(ArmConstants.kUseFOC).withIgnoreHardwareLimits(true);
   private final MotionMagicVoltage motionMagicRequest =
       new MotionMagicVoltage(0).withSlot(0).withEnableFOC(ArmConstants.kUseFOC);
   private final VoltageOut voltageReq = new VoltageOut(0);
@@ -88,16 +88,17 @@ public class ArmIOTalonFX implements ArmIO {
 
   @Override
   public void setPosition(Angle position) {
-    if (ArmConstants.kUseMotionMagic) {
-      armMotor.setControl(motionMagicRequest.withPosition(position));
-    } else {
-      armMotor.setControl(positionRequest.withPosition(position));
-    }
+    armMotor.setControl(positionRequest.withPosition(100));
+//    if (ArmConstants.kUseMotionMagic) {
+//      armMotor.setControl(motionMagicRequest.withPosition(position));
+//    } else {
+//      armMotor.setControl(positionRequest.withPosition(position));
+//    }
   }
 
   @Override
-  public void setVoltage(Voltage voltage) {
-    armMotor.setVoltage(voltage.in(Volt));
+  public void setVoltage(double voltage) {
+    armMotor.setVoltage(voltage);
   }
 
   @Override

@@ -18,8 +18,8 @@ public class Arm extends DisableSubsystem {
   private final ArmIO armIO;
   private final ArmIOInputsAutoLogged armIOAutoLogged = new ArmIOInputsAutoLogged();
 
-  public Arm(boolean disabled, ArmIO armIO) {
-    super(disabled);
+  public Arm(boolean enabled, ArmIO armIO) {
+    super(enabled);
 
     this.armIO = armIO;
   }
@@ -32,10 +32,11 @@ public class Arm extends DisableSubsystem {
   }
 
   public Command setPosition(Angle position) {
+
     return this.run(() -> armIO.setPosition(position));
   }
 
-  public Command setVoltage(Voltage voltage) {
+  public Command setVoltage(double voltage) {
     return this.run(() -> armIO.setVoltage(voltage));
   }
 

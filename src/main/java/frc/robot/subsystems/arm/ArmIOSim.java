@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import frc.robot.sim.SimMechs;
 import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
 
 public class ArmIOSim extends ArmIOTalonFX {
 
@@ -49,7 +50,9 @@ public class ArmIOSim extends ArmIOTalonFX {
   public void updateInputs(ArmIOInputs inputs) {
 
     armSimState = super.getMotor().getSimState();
+    Logger.recordOutput("volt", super.getMotor().getMotorVoltage().getValue());
     armSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
+    Logger.recordOutput("Arm Motor Voltage", armSimState.getMotorVoltage());
     armSimModel.setInputVoltage(armSimState.getMotorVoltage());
     armSimModel.update(LoggedRobot.defaultPeriodSecs);
     armSimState.setRawRotorPosition(

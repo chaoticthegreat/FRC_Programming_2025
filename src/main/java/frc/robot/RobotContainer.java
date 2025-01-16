@@ -7,7 +7,7 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.*;
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
 import choreo.auto.AutoChooser;
@@ -26,6 +26,9 @@ import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.FeatureFlags;
 import frc.robot.commands.AutoRoutines;
 import frc.robot.sim.SimMechs;
+import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.arm.ArmIOSim;
+import frc.robot.subsystems.arm.ArmIOTalonFX;
 import frc.robot.subsystems.rollers.Roller;
 import frc.robot.subsystems.rollers.RollerIOTalonFX;
 import frc.robot.subsystems.swerve.CommandSwerveDrivetrain;
@@ -55,6 +58,8 @@ public class RobotContainer {
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
   private final Roller roller = new Roller(true, new RollerIOTalonFX());
+
+  private final Arm arm = new Arm(true, Utils.isSimulation() ? new ArmIOSim() : new ArmIOTalonFX());
 
   /* Swerve Rate Limiting */
   private final AdaptiveSlewRateLimiter swerveVelXRateLimiter =
@@ -102,6 +107,12 @@ public class RobotContainer {
     // cancelling on release.
     // m_driverController.b("Example
     // method").whileTrue(m_exampleSubsystem.exampleMethodCommand());
+
+    m_driverController.b().onTrue(arm.setPosition(Rotations.of(100)));
+    m_driverController.a().onTrue(arm.setPosition(Rotations.of(-100)));
+
+
+
     m_operatorController.a("ds").onTrue(roller.setRollerVoltage(6));
     m_operatorController.b("dsa").onTrue(roller.setRollerVoltage(-6));
     m_operatorController.y("off").onTrue(roller.off());

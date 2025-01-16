@@ -17,15 +17,15 @@ import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 
 public final class ArmConstants {
-  public static final int armMotorId = 51;
+  public static final int armMotorId = 38;
 
-  public static final int armMotorEncoderId = 52;
+  public static final int armMotorEncoderId = 39;
 
   // max value is 8, min is 0
 
   /* Misc */
   public static final boolean kUseFOC = false;
-  public static final boolean kUseMotionMagic = true; // idk
+  public static final boolean kUseMotionMagic = false; // idk
   public static final double updateFrequency = 50.0;
   public static final int flashConfigRetries = 5;
 
@@ -34,8 +34,8 @@ public final class ArmConstants {
           .withSlot0(
               new Slot0Configs()
                   .withKS(0)
-                  .withKV(0)
-                  .withKP(2)
+                  .withKV(3)
+                  .withKP(100)
                   .withKI(0)
                   .withKD(0)
                   .withKG(1)
@@ -52,13 +52,13 @@ public final class ArmConstants {
           .withCurrentLimits(
               new CurrentLimitsConfigs()
                   .withStatorCurrentLimitEnable(true)
-                  .withStatorCurrentLimit(60))
+                  .withStatorCurrentLimit(120))
           .withFeedback(
               new FeedbackConfigs()
                   .withFeedbackRemoteSensorID(2)
                   .withFeedbackSensorSource(FeedbackSensorSourceValue.FusedCANcoder)
                   .withSensorToMechanismRatio(1)
-                  .withRotorToSensorRatio(2));
+                  .withRotorToSensorRatio(1));
 
   public static final CANcoderConfiguration cancoderConfiguration =
       new CANcoderConfiguration()
@@ -69,15 +69,14 @@ public final class ArmConstants {
                   .withAbsoluteSensorDiscontinuityPoint(Rotations.of(0.5)));
 
   public static final class Sim {
-    public static final double simGearing = 62.67;
+    public static final double simGearing = 168;
 
-    public static final Distance armLength = Meters.of(.5);
+    public static final Distance armLength = Inches.of(22);
     public static final Mass armMass = Kilograms.of(2);
-    public static final double jkGMetersSquared =
-        SingleJointedArmSim.estimateMOI(armLength.in(Meters), armMass.in(Kilograms));
+    public static final double jkGMetersSquared =1.2922967095;
 
     public static final Rotation2d minAngle = Rotation2d.fromDegrees(0);
-    public static final Rotation2d maxAngle = Rotation2d.fromDegrees(90);
-    public static final Rotation2d startingAngle = Rotation2d.fromDegrees(25);
+    public static final Rotation2d maxAngle = Rotation2d.fromDegrees(180);
+    public static final Rotation2d startingAngle = Rotation2d.fromDegrees(0);
   }
 }

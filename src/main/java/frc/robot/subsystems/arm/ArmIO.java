@@ -31,7 +31,7 @@ public interface ArmIO {
 
   public default void setPosition(Angle position) {}
 
-  public default void setVoltage(Voltage voltage) {}
+  public default void setVoltage(double voltage) {}
 
   public default TalonFX getMotor() {
     return new TalonFX(0);
