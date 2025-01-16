@@ -19,17 +19,29 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 
 public final class SimMechs {
 
-  public static final Mechanism2d mech = new Mechanism2d(5, 5);
+  public final Mechanism2d mech = new Mechanism2d(5, 5);
 
-  private static final MechanismRoot2d armRoot = mech.getRoot("Arm", 3.5, 0.2);
-  private static final MechanismLigament2d armViz =
+  private final MechanismRoot2d armRoot = mech.getRoot("Arm", 3.5, 0.2);
+  private final MechanismLigament2d armViz =
       armRoot.append(new MechanismLigament2d("Arm", 1, 0.0, 5.0, new Color8Bit(Color.kGreen)));
 
-  public static void updateArm(Angle angle) {
+  private static SimMechs instance = null;
+
+  private SimMechs() {
+  }
+
+  public static SimMechs getInstance() {
+    if (instance == null) {
+      instance = new SimMechs();
+    }
+    return instance;
+  }
+
+  public void updateArm(Angle angle) {
     armViz.setAngle(angle.in(Degrees));
   }
 
-  public static void init() {
+  public void publishToNT() {
     SmartDashboard.putData("RobotSim", mech);
   }
 }

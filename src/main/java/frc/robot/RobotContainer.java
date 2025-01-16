@@ -82,7 +82,7 @@ public class RobotContainer {
     CommandScheduler.getInstance().registerSubsystem(drivetrain);
     configureSwerve();
     if (Utils.isSimulation()) {
-      SimMechs.init();
+      SimMechs.getInstance().publishToNT();
     }
   }
 

@@ -7,11 +7,13 @@
 
 package frc.robot.subsystems.arm;
 
-import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.signals.*;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 
 public final class ArmConstants {
@@ -69,8 +71,10 @@ public final class ArmConstants {
   public static final class Sim {
     public static final double simGearing = 62.67;
 
-    public static final double armLength = .5;
-    public static final double jkGMetersSquared = SingleJointedArmSim.estimateMOI(armLength, 2);
+    public static final Distance armLength = Meters.of(.5);
+    public static final Mass armMass = Kilograms.of(2);
+    public static final double jkGMetersSquared =
+        SingleJointedArmSim.estimateMOI(armLength.in(Meters), armMass.in(Kilograms));
 
     public static final Rotation2d minAngle = Rotation2d.fromDegrees(0);
     public static final Rotation2d maxAngle = Rotation2d.fromDegrees(90);
