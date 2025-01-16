@@ -8,8 +8,10 @@
 package frc.robot.sim;
 
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Meters;
 
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
@@ -21,14 +23,17 @@ public final class SimMechs {
 
   public final Mechanism2d mech = new Mechanism2d(5, 5);
 
-  private final MechanismRoot2d armRoot = mech.getRoot("Arm", 3.5, 0.2);
+  private final MechanismRoot2d elevatorRoot = mech.getRoot("Elevator", 3.5, 0.2);
+
+  private final MechanismLigament2d elevatorViz =
+      elevatorRoot.append(new MechanismLigament2d("ampevator", 2, 90));
+
   private final MechanismLigament2d armViz =
-      armRoot.append(new MechanismLigament2d("Arm", 1, 0.0, 5.0, new Color8Bit(Color.kGreen)));
+      elevatorViz.append(new MechanismLigament2d("Arm", 1, 0.0, 5.0, new Color8Bit(Color.kGreen)));
 
   private static SimMechs instance = null;
 
-  private SimMechs() {
-  }
+  private SimMechs() {}
 
   public static SimMechs getInstance() {
     if (instance == null) {
@@ -39,6 +44,10 @@ public final class SimMechs {
 
   public void updateArm(Angle angle) {
     armViz.setAngle(angle.in(Degrees));
+  }
+
+  public void updateElevator(Distance height) {
+    elevatorViz.setLength(height.in(Meters));
   }
 
   public void publishToNT() {
